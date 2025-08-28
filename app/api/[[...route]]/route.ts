@@ -1,0 +1,16 @@
+import { Hono } from 'hono'
+import { handle } from "hono/vercel"
+
+//export const runtime="edge";
+
+const app = new Hono().basePath('/api');
+app.get('/hello', (c) => c.text('Hello Bun!'))  
+app.get("/hello/:test", (c) => {
+    const test = c.req.param("test");
+    return c.json({message: "hello worlld ",
+        test: test,
+    })
+})
+
+export const GET = handle(app);
+export const POST = handle(app);
