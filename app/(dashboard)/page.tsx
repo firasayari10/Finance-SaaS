@@ -4,8 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 export default function Home() {
   return (
     <div>
-    Authenticated route
-    <UserButton afterSignOutUrl=""></UserButton>
+    dashboard page 
   
     </div>
   );
