@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1756498189492,
+      "tag": "0000_green_pete_wisdom",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1756499685276,
+      "tag": "0001_sour_rhodey",
+      "breakpoints": true
+    }
+  ]
+}
