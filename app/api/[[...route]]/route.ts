@@ -1,4 +1,5 @@
 import { clerkMiddleware, getAuth } from '@hono/clerk-auth'
+
 import {object, z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from 'hono'
@@ -6,10 +7,18 @@ import { handle } from "hono/vercel"
 import { error } from 'console';
 
 
+import accounts from "./accounts"
+
 
 //export const runtime="edge";
 
 const app = new Hono().basePath('/api');
+const routes = app 
+    .route("/accounts",accounts);
+
+
+
+/*
 app.get('/hello',clerkMiddleware() ,(c) => {
     const auth=getAuth(c);
     if(!auth?.userId){
@@ -21,7 +30,7 @@ app.get('/hello',clerkMiddleware() ,(c) => {
 })  
 
 
-/*app.get("/hello/:test", zValidator("param",z.object({
+app.get("/hello/:test", zValidator("param",z.object({
     test: z.string(),
 })) ,(c) => {
     const {test} = c.req.valid("param");
@@ -46,3 +55,4 @@ zValidator("param",z.object({
 
 export const GET = handle(app);
 export const POST = handle(app);
+export type AppType = typeof routes ; 
