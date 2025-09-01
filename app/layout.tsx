@@ -5,8 +5,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import QueryProvider from "@/providers/query-provider" ;
 import "./globals.css"
-
-
+import { Toaster } from "sonner";
+import { SheetProvider } from "@/providers/sheet-provider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -35,7 +35,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <QueryProvider>   {children} aq</QueryProvider>
+      <QueryProvider> 
+
+        <SheetProvider /> 
+        <Toaster/> 
+         {children}</QueryProvider>
        
       </body>
     </html>

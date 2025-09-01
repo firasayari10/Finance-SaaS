@@ -2,7 +2,7 @@ import {Hono} from "hono";
 import { handle } from "hono/vercel";
 import {db} from "@/db/drizzle"
 import {HTTPException } from "hono/http-exception"
-import {accounts, inserAccountSchema } from "@/db/schema" ;
+import {accounts, insertAccountSchema } from "@/db/schema" ;
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { eq } from "drizzle-orm" ; 
 import {createId} from "@paralleldrive/cuid2"
@@ -30,7 +30,7 @@ const app = new Hono()
         return c.json({data})
 
     })
-    .post("/",clerkMiddleware(),zValidator("json",inserAccountSchema.pick({name: true ,})), async (c) => {
+    .post("/",clerkMiddleware(),zValidator("json",insertAccountSchema.pick({name: true ,})), async (c) => {
         const auth = getAuth(c);
         const values = c.req.valid("json");
         if(!auth?.userId) 
