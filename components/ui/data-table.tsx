@@ -10,11 +10,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   getFilteredRowModel,
+  Row,
 } from "@tanstack/react-table"
 import { Button} from "@/components/ui/button"
 import  { Input } from "@/components/ui/input"
 
-
+import { Trash } from "lucide-react"
 
 import {
   Table,
@@ -29,12 +30,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[],
   filterKey : string
+  onDelete : (rows: Row<TData>[] )=> void ,
+  disabled?: boolean,
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  filterKey
+  filterKey,
+  onDelete,
+  disabled,
 }: DataTableProps<TData, TValue>) {
     const [sorting , setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -69,6 +74,18 @@ export function DataTable<TData, TValue>({
                 }
           className="max-w-sm"
         />
+        {table.getFilteredSelectedRowModel().rows.length> 0 && (
+          <Button size="sm"
+          disabled={disabled}
+          variant="outline" 
+          className="ml-auto fon-normal text-xs">
+            <Trash className=" size-4 mr-2"/>
+
+          
+          Delete  ({table.getFilteredSelectedRowModel().rows.length})
+          </Button>
+            
+        )}
       </div>
     <div className="overflow-hidden rounded-md border">
       <Table>
