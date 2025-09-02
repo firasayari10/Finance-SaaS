@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import  { client } from "@/lib/hono" 
 type ResponseType = InferResponseType<typeof client.api.accounts.$post>;
 
-type RequestType = InferResponseType<typeof client.api.accounts.$post>["json"];
+type RequestType = InferRequestType<typeof client.api.accounts.$post>["json"];
 
 
 
