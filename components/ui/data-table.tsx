@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
           variant="outline" 
           className="ml-auto fon-normal text-xs"
           onClick={() => {
-            onDelete(table.getFilteredRowModel().rows)
+            onDelete(table.getFilteredSelectedRowModel().rows)
             table.resetRowSelection();
           }}>
             <Trash className=" size-4 mr-2"/>
