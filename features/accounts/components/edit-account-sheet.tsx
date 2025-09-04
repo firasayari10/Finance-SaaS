@@ -50,7 +50,7 @@ const onDelete = async () => {
     const ok = await confirm();
     if (!ok) return;
 
-    deleteMutation.mutate();  // use the id already bound in the hook
+    deleteMutation.mutate();  
 };
 
 const defaultValues =  accoutnQuery.data ? {
