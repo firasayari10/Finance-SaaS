@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "accounts" (
+CREATE TABLE "accounts" (
 	"id" text PRIMARY KEY NOT NULL,
 	"plaid_id" text,
 	"name" text NOT NULL,

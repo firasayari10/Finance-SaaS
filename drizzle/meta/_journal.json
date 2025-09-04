@@ -8,6 +8,27 @@
       "when": 1756765869294,
       "tag": "0000_public_baron_strucker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1757022709973,
+      "tag": "0001_wealthy_valeria_richards",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757023122453,
+      "tag": "0002_fantastic_emma_frost",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1757023413913,
+      "tag": "0003_tough_meggan",
+      "breakpoints": true
     }
   ]
 }
