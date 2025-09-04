@@ -7,8 +7,7 @@ import { ArrowDown,ArrowUpDown, ArrowUp, ChevronsUpDown, EyeOff } from "lucide-r
 import { Button  } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { client } from "@/lib/hono";
-
-
+import { Actions }  from "./actions"
 export type ResponsType = InferResponseType<typeof client.api.accounts.$get ,200>["data"][0];
 
 export const columns: ColumnDef<ResponsType>[] = [
@@ -47,5 +46,9 @@ export const columns: ColumnDef<ResponsType>[] = [
       )
     }
   },
+  {
+    id : "actions",
+    cell :({row}) => <Actions id={row.original.id} />
+  }
  
 ]

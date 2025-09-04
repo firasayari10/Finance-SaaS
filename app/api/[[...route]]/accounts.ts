@@ -43,8 +43,20 @@ const app = new Hono()
         }
         if(!auth?.userId){
           return c.json({error : "unauthorized  "},401);
+        };
+
+        const[ data ] = await db .select({
+          id: accounts.id,
+          name : accounts.name,
+        })
+        .from ( accounts)
+        .where (and ( eq (accounts.userId , auth.userId),eq(accounts.id,id)));
+
+        if(!data){
+          return c.json({error : "not found " },404);
         }
 
+        return c.json({data});
 
 
 
@@ -59,7 +71,7 @@ const app = new Hono()
         const data = await db.insert(accounts).values({
             id: createId() ,
             userId: auth.userId,
-            name: values.name,
+            name : accounts.name,
             ...values
         }).returning();
 
