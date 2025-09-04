@@ -30,6 +30,25 @@ const app = new Hono()
         return c.json({data})
 
     })
+    .get("/:id",zValidator("param",z.object(
+      {
+        id: z.string().optional (),
+
+      }
+    ) ),clerkMiddleware(), async(c) =>  {
+        const auth=getAuth(c);
+        const {id} =c.req.valid("param");
+        if(!id){
+          return c.json({error : "missing id "},400);
+        }
+        if(!auth?.userId){
+          return c.json({error : "unauthorized  "},401);
+        }
+
+
+
+
+    })
     .post("/",clerkMiddleware(),zValidator("json",insertAccountSchema.pick({name: true ,})), async (c) => {
         const auth = getAuth(c);
         const values = c.req.valid("json");

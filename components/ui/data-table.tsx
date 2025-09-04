@@ -16,7 +16,7 @@ import { Button} from "@/components/ui/button"
 import  { Input } from "@/components/ui/input"
 
 import { Trash } from "lucide-react"
-
+import { useConfirm } from "@/hooks/use-confirm"
 import {
   Table,
   TableBody,
@@ -41,6 +41,9 @@ export function DataTable<TData, TValue>({
   onDelete,
   disabled,
 }: DataTableProps<TData, TValue>) {
+  const [ConfirmDialog, confirm] = useConfirm ("Are you sure you want to proceed with this action ? " , " you are about to perform a delete action on multiple items "
+
+  )
     const [sorting , setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -65,6 +68,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
+      <ConfirmDialog />
         <div className="flex items-center py-4">
         <Input
           placeholder={`filter ${filterKey}`}
@@ -79,9 +83,12 @@ export function DataTable<TData, TValue>({
           disabled={disabled}
           variant="outline" 
           className="ml-auto fon-normal text-xs"
-          onClick={() => {
+          onClick={async() => {
+            const ok  =await confirm ();
+            if(ok){
             onDelete(table.getFilteredSelectedRowModel().rows)
             table.resetRowSelection();
+            }
           }}>
             <Trash className=" size-4 mr-2"/>
 
