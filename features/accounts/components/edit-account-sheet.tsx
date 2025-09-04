@@ -9,6 +9,7 @@ import { AccountForm } from "@/features/accounts/components/account-form";
 import { FormValue } from "hono/types";
 import { useCreateAccount } from "@/features/accounts/api/user-create-account";
 import { useGetAccount } from "../api/user-get-account";
+import { Loader2 } from "lucide-react";
 
 export const EditAccountSheet = () => {
 const {isOpen, onClose , id} = useOpenAccount();
@@ -16,6 +17,9 @@ const {isOpen, onClose , id} = useOpenAccount();
 
 const accoutnQuery = useGetAccount(id)
 const mutation = useCreateAccount();
+
+const isLoading = accoutnQuery.isLoading;
+
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
 });
@@ -44,13 +48,25 @@ return (
 
         <SheetHeader>
             <SheetTitle>
-                New account
+               Edit accounts
             </SheetTitle>
             <SheetDescription >
-                create a new account to track your transactions 
+                Modify this exisitng account 
             </SheetDescription>
         </SheetHeader>
-        <AccountForm onSubmit={onSubmit} disabled={mutation.isPending}  defaultValues={ defaultValues}/>
+        {isLoading ? (
+            <div className="absolute inset-0 flex itemcs-center justify-center">
+                <Loader2 className="size-4 text-muted-foreground animate-spin" />
+            </div>
+
+        ):(
+            <AccountForm 
+            id ={id}
+            onSubmit={onSubmit} 
+            disabled={mutation.isPending}  
+            defaultValues={ defaultValues}/>
+        )}
+        
     </SheetContent>
 </Sheet>
 );
