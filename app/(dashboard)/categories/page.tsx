@@ -2,27 +2,27 @@
 
 import { Card , CardContent , CardHeader , CardTitle} from "@/components/ui/card"
 import {Button} from "@/components/ui/button"
-import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
+import { useNewCategory } from "@/features/categories/hooks/use-new-cactegory";
 import { DataTable } from "@/components/ui/data-table";
 
 // to be removed later because i'm just experimienting with mock data for the sake of testing the front end 
 import  { columns}  from "./columns"
-import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
+import { useGetCategories } from "@/features/categories/api/user-get-categories";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete";
+import { useBulkDeleteCategories } from "@/features/categories/api/use-bulk-delete-categories";
 
 
-const AccountPage = () => {
+const CategoriesPage = () => {
 
 
-    const newAccount = useNewAccount();
-    const deleteAccounts = useBulkDeleteAccounts();
-    const accountsquery = useGetAccounts();
-    const accounts = accountsquery.data  ||[];
-    const isdisabled = accountsquery.isLoading || deleteAccounts.isPending ;
-    if (accountsquery.isLoading)
+    const newCategory = useNewCategory();
+    const deleteCategories = useBulkDeleteCategories();
+    const categoriesquery = useGetCategories();
+    const categories = categoriesquery.data  ||[];
+    const isdisabled = categoriesquery.isLoading || deleteCategories.isPending ;
+    if (categoriesquery.isLoading)
     {
         return (
             <div className="max-w-screen-2xl mx-auto w-full pb-10 mb-24 ">
@@ -50,17 +50,17 @@ const AccountPage = () => {
             <Card className=" border-none drop-shadow-sm">
             <CardHeader className=" gap-y-2 lg:flex-row lg:items-center lg:justify-between">
                 <CardTitle className="text-xl line-clamp-1" >
-                    Accounts page
+                    Categories page
                 </CardTitle>
-                <Button size="sm" onClick={newAccount.onOpen}>
+                <Button size="sm" onClick={newCategory.onOpen}>
                     Add new 
                 </Button>
      
             </CardHeader>
             <CardContent>
-                <DataTable filterKey="name" columns={columns} data={accounts} onDelete={(row)=>{
+                <DataTable filterKey="name" columns={columns} data={categories} onDelete={(row)=>{
                     const  ids = row.map((r)=> r.original.id);
-                    deleteAccounts.mutate({ids});
+                    deleteCategories.mutate({ids});
                 }}  disabled={isdisabled}/>
             </CardContent>
             </Card>
@@ -70,4 +70,4 @@ const AccountPage = () => {
 
 };
 
-export default AccountPage ;
+export default CategoriesPage ;

@@ -1,34 +1,34 @@
 
 import { z } from "zod"
-import { insertAccountSchema } from "@/db/schema";
+import { insertCategorySchema } from "@/db/schema";
 import {
     Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle
 } from "@/components/ui/sheet"
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { AccountForm } from "@/features/accounts/components/account-form";
+import { useOpenCategory } from "../hooks/use-open-category";
+import { CategoryForm } from "./category-form";
 import { FormValue } from "hono/types";
-//import { useCreateAccount } from "@/features/accounts/api/user-create-account";
-import { useGetAccount } from "../api/user-get-account";
+
+import { useGetCategory } from "../api/user-get-category";
 import { Loader2 } from "lucide-react";
-import { useEditAccount } from "@/features/accounts/api/use-edit-account";
-import  {useDeleteAccount } from "@/features/accounts/api/use-delete-account"
+import { useEditCategory } from "../api/use-edit-category";
+import  {useDeleteCategory } from "@/features/categories/api/use-delete-category"
 import { useConfirm } from "@/hooks/use-confirm";
 
-export const EditAccountSheet = () => {
-const {isOpen, onClose , id} = useOpenAccount();
+export const EditCategorySheet = () => {
+const {isOpen, onClose , id} = useOpenCategory();
 const [ConfirmDialog , confirm] = useConfirm(
-    "Are you sure you ?", " you are going to delete this account "
+    "Are you sure you ?", " you are going to delete this category "
 
 )
 
 
-const accoutnQuery = useGetAccount(id)
-//const mutation = useCreateAccount();
-const editMutation = useEditAccount(id);
-const deleteMutation = useDeleteAccount(id!);
+const categoryQuery = useGetCategory(id)
+
+const editMutation = useEditCategory(id);
+const deleteMutation = useDeleteCategory(id!);
 
 const isPending = editMutation.isPending || deleteMutation.isPending ;
-const isLoading = accoutnQuery.isLoading 
+const isLoading = categoryQuery.isLoading 
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
@@ -53,8 +53,8 @@ const onDelete = async () => {
     deleteMutation.mutate();  
 };
 
-const defaultValues =  accoutnQuery.data ? {
-    name: accoutnQuery.data.name
+const defaultValues =  categoryQuery.data ? {
+    name: categoryQuery.data.name
 }:{
     name:"",
 }
@@ -68,10 +68,10 @@ return (
 
         <SheetHeader>
             <SheetTitle>
-               Edit accounts
+               Edit categories
             </SheetTitle>
             <SheetDescription >
-                Modify this exisitng account 
+                Modify this exisitng categories
             </SheetDescription>
         </SheetHeader>
         {isLoading ? (
@@ -80,7 +80,7 @@ return (
             </div>
 
         ):(
-            <AccountForm 
+            <CategoryForm
             id ={id}
             onSubmit={onSubmit} 
             disabled={isPending}  

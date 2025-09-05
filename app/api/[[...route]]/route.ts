@@ -6,7 +6,7 @@ import { Hono } from 'hono'
 import { handle } from "hono/vercel"
 import { error } from 'console';
 
-
+import categories from './categories';
 import accounts from "./accounts"
 import { HTTPException } from 'hono/http-exception';
 
@@ -21,7 +21,8 @@ app.onError((err, c) => {
   return c.json({ error: "internal server error " }, 500);
 });
 const routes = app 
-    .route("/accounts",accounts);
+    .route("/accounts",accounts)
+    .route("/categories",categories);
 
 
 

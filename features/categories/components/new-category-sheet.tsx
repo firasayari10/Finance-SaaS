@@ -1,17 +1,17 @@
 
 import { z } from "zod"
-import { insertAccountSchema } from "@/db/schema";
+import { insertCategorySchema } from "@/db/schema";
 import {
     Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle
 } from "@/components/ui/sheet"
-import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
-import { AccountForm } from "@/features/accounts/components/account-form";
+import { useNewCategory } from "@/features/categories/hooks/use-new-cactegory";
+import { CategoryForm } from "./category-form"; 
 import { FormValue } from "hono/types";
-import { useCreateAccount } from "@/features/accounts/api/user-create-account";
+import { useCreateCategory } from "../api/user-create-category";
 
-export const NewAccountSheet = () => {
-const {isOpen, onClose} = useNewAccount();
-const mutation = useCreateAccount();
+export const NewCategorySheet = () => {
+const {isOpen, onClose} = useNewCategory();
+const mutation = useCreateCategory();
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
 });
@@ -35,13 +35,13 @@ return (
 
         <SheetHeader>
             <SheetTitle>
-                New account
+                New Category
             </SheetTitle>
             <SheetDescription >
-                create a new account to track your transactions 
+                create a new category
             </SheetDescription>
         </SheetHeader>
-        <AccountForm onSubmit={onSubmit} disabled={mutation.isPending}  defaultValues={{ name : ""}}/>
+        <CategoryForm onSubmit={onSubmit} disabled={mutation.isPending}  defaultValues={{ name : ""}}/>
     </SheetContent>
 </Sheet>
 );

@@ -1,7 +1,7 @@
 "use client";                                                  
 import { Button } from "@/components/ui/button";
 import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
-import { useNewAccount } from "@/features/hooks/use-new-accounts";
+import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
 import { UserButton } from "@clerk/nextjs";
 export default function Home() {
 

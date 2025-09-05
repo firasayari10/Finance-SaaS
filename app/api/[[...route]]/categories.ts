@@ -2,7 +2,7 @@ import {Hono} from "hono";
 import { handle } from "hono/vercel";
 import {db} from "@/db/drizzle"
 import {HTTPException } from "hono/http-exception"
-import {accounts, insertAccountSchema } from "@/db/schema" ;
+import {categories,insertCategorySchema  } from "@/db/schema" ;
 import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
 import { and ,eq,inArray } from "drizzle-orm" ; 
 import {createId} from "@paralleldrive/cuid2"
@@ -21,12 +21,12 @@ const app = new Hono()
         }
         const data = await db 
         .select({
-            id: accounts.id,
-            name:  accounts.name,
+            id: categories.id,
+            name:  categories.name,
 
         })
-        .from(accounts)
-        .where(eq(accounts.userId,auth.userId));
+        .from(categories)
+        .where(eq(categories.userId,auth.userId));
         return c.json({data})
 
     })
@@ -46,11 +46,11 @@ const app = new Hono()
         };
 
         const[ data ] = await db .select({
-          id: accounts.id,
-          name : accounts.name,
+          id: categories.id,
+          name : categories.name,
         })
-        .from ( accounts)
-        .where (and ( eq (accounts.userId , auth.userId),eq(accounts.id,id)));
+        .from ( categories)
+        .where (and ( eq (categories.userId , auth.userId),eq(categories.id,id)));
 
         if(!data){
           return c.json({error : "no data found" },404);
@@ -61,17 +61,17 @@ const app = new Hono()
 
 
     })
-    .post("/",clerkMiddleware(),zValidator("json",insertAccountSchema.pick({name: true ,})), async (c) => {
+    .post("/",clerkMiddleware(),zValidator("json",insertCategorySchema.pick({name: true ,})), async (c) => {
         const auth = getAuth(c);
         const values = c.req.valid("json");
         if(!auth?.userId) 
         {
                 return c.json({error : "unauthorized"},401);
         }
-        const data = await db.insert(accounts).values({
+        const data = await db.insert(categories).values({
             id: createId() ,
             userId: auth.userId,
-            //name : accounts.name,
+            //name : categories.name,
             ...values
         }).returning();
 
@@ -96,16 +96,16 @@ const app = new Hono()
                 return c.json({ error: "unauthorized" }, 401);
               }
               const data = await db
-              .delete(accounts)
+              .delete(categories)
               .where(
                   and(
-                      eq(accounts.userId,auth.userId),
+                      eq(categories.userId,auth.userId),
                   
-              inArray(accounts.id , values.ids))
+              inArray(categories.id , values.ids))
 
 
           ).returning({
-              id:accounts.id,}
+              id:categories.id,}
           );
 
 
@@ -113,7 +113,7 @@ const app = new Hono()
   }
     )
     .patch(
-      "/:id",clerkMiddleware(),zValidator("json",insertAccountSchema.pick({
+      "/:id",clerkMiddleware(),zValidator("json",insertCategorySchema.pick({
         name : true ,   
       })),zValidator( "param", z.object({
         id : z.string().optional(),
@@ -134,12 +134,12 @@ const app = new Hono()
       }
 
       const  [data] = await db 
-      .update(accounts)
+      .update(categories)
       .set(values)
       .where (
         and(
-          eq(accounts.userId, auth.userId )
-          , eq(accounts.id , id)
+          eq(categories.userId, auth.userId )
+          , eq(categories.id , id)
         ),
       )
       .returning();
@@ -173,15 +173,15 @@ const app = new Hono()
       }
 
       const  [data] = await db 
-      .delete(accounts)
+      .delete(categories)
       .where (
         and(
-          eq(accounts.userId, auth.userId )
-          , eq(accounts.id , id)
+          eq(categories.userId, auth.userId )
+          , eq(categories.id , id)
         ),
       )
       .returning(
-        {id : accounts.id}
+        {id : categories.id}
       );
 
       if (!data) 
