@@ -8,7 +8,9 @@ import { error } from 'console';
 
 import categories from './categories';
 import accounts from "./accounts"
+import transactions from "./transactions"
 import { HTTPException } from 'hono/http-exception';
+
 
 
 //export const runtime="edge";
@@ -22,7 +24,8 @@ app.onError((err, c) => {
 });
 const routes = app 
     .route("/accounts",accounts)
-    .route("/categories",categories);
+    .route("/categories",categories)
+    .route("/transactoons",transactions);
 
 
 
