@@ -25,7 +25,7 @@ app.onError((err, c) => {
 const routes = app 
     .route("/accounts",accounts)
     .route("/categories",categories)
-    .route("/transactoons",transactions);
+    .route("/transactions",transactions);
 
 
 
