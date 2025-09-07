@@ -144,48 +144,48 @@ const app = new Hono()
   )
     
     .post(
-        "/bulk-delete",
-        clerkMiddleware(),
-        zValidator(
-          "json",
-          z.object({
-            ids: z.array(z.string()),
-          })
-        ),
-            async (c) => {
-              const auth = getAuth(c);
-              const values= c.req.valid("json");
+  "/bulk-delete",
+  clerkMiddleware(),
+  zValidator(
+    "json",
+    z.object({
+      ids: z.array(z.string()),
+    })
+  ),
+  async (c) => {
+    const auth = getAuth(c);
+    const values = c.req.valid("json");
 
-              if (!auth?.userId) {
-                return c.json({ error: "unauthorized" }, 401);
-              }
-              const transactionsToDelete = db.$with("transactions_to_delete").as(
-                db.select({ id: transactions.id}).from(transactions)
-                .innerJoin(accounts , eq(transactions.accountId,accounts.id))
-                .where(and(
-                  inArray(transactions.id , values.ids),
-                  eq(accounts.userId , auth.userId)
-                ))
-              )
-              const data = await db
-              .with(transactionsToDelete)
-              .delete(transactions)
-              .where(
-                inArray(transactions.id , sql`select id from $ {transactionToDelete}`)
-              )
-              .returning({
-                id: transactions.id,
-              })
-              
-              
+    if (!auth?.userId) {
+      return c.json({ error: "unauthorized" }, 401);
+    }
+    const transactionsToDelete = db
+  .$with("transactions_to_delete")
+  .as(
+    db.select({ id: transactions.id })
+      .from(transactions)
+      .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+      .where(
+        and(
+          inArray(transactions.id, values.ids),
+          eq(accounts.userId, auth.userId)
+        )
+      )
+  );
+
+const data = await db
+  .with(transactionsToDelete)
+  .delete(transactions)
+  .where(
+    inArray(transactions.id, db.select({ id: transactionsToDelete.id }).from(transactionsToDelete))
+  )
+  .returning({ id: transactions.id });
 
 
-        
-
-
-    return c.json({data});
+    return c.json({ data });
   }
-    )
+)
+    
     .patch(
       "/:id",clerkMiddleware(),zValidator("json",insertTransactionSchema.omit({
         id : true ,   

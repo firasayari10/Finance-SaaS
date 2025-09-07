@@ -12,14 +12,16 @@ import { useCreateCategory } from "@/features/categories/api/user-create-categor
 import { useGetCategories } from "@/features/categories/api/user-get-categories";
 import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
 import { useCreateAccount } from "@/features/accounts/api/user-create-account";
-import { NewTransactionForm} from "@/features/transactions/components/transaction-form";
+import { NewTransactionForm} from "@/features/transactions/components/transaction-form"
+import { useBulkDeleteTransactions } from "../api/use-bulk-create-transactions copy";
 import { Loader2 } from "lucide-react";
-
+import { string } from "zod/v3";
+import { id } from "zod/v4/locales";
 
 export const NewTransactionSheet = () => {
 const {isOpen, onClose} = useNewTransaction();
 const CreateMutation = useCreateTransation();
-
+const deleteMutation = useBulkDeleteTransactions();
 const categoryQuery = useGetCategories();
 const categoryMutation = useCreateCategory();
 const onCreateCategory = (name: string) => categoryMutation.mutate({
@@ -64,6 +66,9 @@ const  onSubmit = (values :  apiFormValues) =>
 
             
         }
+
+        
+
 return (
 <Sheet open={isOpen} onOpenChange ={ onClose } >
 

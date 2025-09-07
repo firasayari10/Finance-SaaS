@@ -19,7 +19,7 @@ import {
 
 
 type Props = {
-    value?: Date ;
+    value?: Date 
     onChange?: SelectSingleEventHandler ;
     disabled?:boolean;
 
@@ -41,9 +41,22 @@ export const DatePicker = ({
 
             </Button>
         </PopoverTrigger>
-        <PopoverContent>
-            <Calendar mode="single"  selected={value} onSelect={onChange} disabled={disabled} autoFocus/>
-        </PopoverContent>
+        <PopoverContent
+  className="p-0"
+  side="bottom"
+  align="start"
+>
+  <div className="min-w-[300px] w-auto">
+    <Calendar
+      className="w-[300px]" // enforce calendar width
+      mode="single"
+      selected={value}
+      onSelect={onChange}
+      disabled={disabled}
+      initialFocus
+    />
+  </div>
+</PopoverContent>
     </Popover>
     );
 }
