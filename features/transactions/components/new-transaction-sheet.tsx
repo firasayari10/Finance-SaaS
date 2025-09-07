@@ -48,21 +48,13 @@ const isLoading = categoryQuery.isLoading || accountQuery.isLoading ;
 
 
 
-const formSchema = z.object({
-    date : z.coerce.date(),
-    accountId: z.string(),
-    categoryId: z.string().nullable().optional(),
-    payee: z.string(),
-    amount: z.number(),
-    notes:z.string().nullable().optional(),
-})
+const apiSchema = insertTransactionSchema.omit({
+    id: true,
+});
 
+type apiFormValues = z.input<typeof apiSchema>;
 
-
-
-type FormValues = z.infer<typeof formSchema>;
-
-const  onSubmit = (values :  FormValues) =>
+const  onSubmit = (values :  apiFormValues) =>
         {
                 CreateMutation.mutate(values, {
                     onSuccess: () => {
@@ -100,7 +92,7 @@ return (
         disabled={isPending}
         categoryOptions={categoryOptions}
         onCreateCategory={onCreateCategory}
-        acountOptions={accountOptions}
+        accountOptions={accountOptions}
         onCreateAccount={onCreateAccount}
         />
         )

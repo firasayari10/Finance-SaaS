@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
 import { insertAccountSchema, insertTransactionSchema } from "@/db/schema";
@@ -65,8 +66,20 @@ export const NewTransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    onSubmit(values);
+  console.log({values});
+  
+  // Convert FormValues to apiFormValues format
+  const apiValues: apiFormValues = {
+    date: values.date,
+    accountId: values.accountId,
+    categoryId: values.categoryId || null,
+    payee: values.payee,
+    amount: values.amount,
+    notes: values.notes || null,
   };
+  
+  onSubmit(apiValues);
+};
 
   const handleDelete = () => {
     onDelete?.();
@@ -74,20 +87,24 @@ export const NewTransactionForm = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 pt-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} 
+      className="space-y-4 pt-4">
         
         <FormField
-          name="payee"
+          name="accountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Account</FormLabel>
               <FormControl>
-                <Input
-                  disabled={disabled}
-                  placeholder="e.g., pls input   Cash, Bank, Credit Card"
-                  {...field}
-                />
+                 <Select 
+                 placeholder="select account"
+                 options={accountOptions}
+                 onCreate={onCreateAccount}
+                 value={field.value}
+                 onChange={field.onChange}
+                 disabled={disabled}
+                 />
               </FormControl>
             </FormItem>
           )}
