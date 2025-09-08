@@ -220,7 +220,7 @@ const data = await db
       .update(transactions)
       .set(values)
       .where(
-        inArray(transactions.id , sql `(select id from ${transactionsToUpdate})`)
+        inArray(transactions.id , (sql `(select id from ${transactionsToUpdate})`))
       )
       .returning();
 
@@ -268,7 +268,7 @@ const data = await db
       .where (
         inArray(
           transactions.id , 
-          sql `select id from ${transactionsToDelete}`
+          sql `(select id from ${transactionsToDelete})`
         )
       )
       .returning(
