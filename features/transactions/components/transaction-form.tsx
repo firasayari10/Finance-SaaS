@@ -67,16 +67,9 @@ export const NewTransactionForm = ({
   });
 
   const handleSubmit = (values: FormValues) => {
-    const amount = parseFloat(values.amount)
-    const amountInMiliunits = converAmountToMiliunits(amount);
-    onSubmit({
-      ...values,
-      amount: amountInMiliunits,
-    })
-  console.log({values});
-  
-  
- 
+  const amount = parseFloat(values.amount);
+  const amountInMiliunits = converAmountToMiliunits(amount);
+
   const apiValues: apiFormValues = {
     date: values.date,
     accountId: values.accountId,
@@ -85,7 +78,7 @@ export const NewTransactionForm = ({
     amount: amountInMiliunits,
     notes: values.notes || null,
   };
-  
+
   onSubmit(apiValues);
 };
 
