@@ -24,7 +24,7 @@ import { converAmountToMiliunits } from "@/lib/utils";
 const formSchema = z.object({
     date : z.coerce.date(),
     accountId: z.string(),
-    categoryId: z.string().nullable().optional(),
+    categoryId: z.string(),
     payee: z.string(),
     amount: z.string(),
     notes:z.string().nullable().optional(),
@@ -73,10 +73,10 @@ export const NewTransactionForm = ({
   const apiValues: apiFormValues = {
     date: values.date,
     accountId: values.accountId,
-    categoryId: values.categoryId || null,
+    categoryId: values.categoryId === "" ? null : values.categoryId, // Convert empty to null
     payee: values.payee,
     amount: amountInMiliunits,
-    notes: values.notes || null,
+    notes: values.notes === "" ? null : values.notes, // Convert empty to null
   };
 
   onSubmit(apiValues);

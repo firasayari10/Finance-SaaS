@@ -187,54 +187,59 @@ const data = await db
 )
     
     .patch(
-      "/:id",clerkMiddleware(),zValidator("json",insertTransactionSchema.omit({
-        id : true ,   
-      })),zValidator( "param", z.object({
-        id : z.string().optional(),
-      })),
-      async (c) => {
-        const auth = getAuth(c);
-        const { id } = c.req.valid("param");
-        const values = c.req.valid("json");
+  "/:id",
+  clerkMiddleware(),
+  zValidator("json", insertTransactionSchema.omit({
+    id: true,   
+  })),
+  zValidator("param", z.object({
+    id: z.string(),
+  })),
+  async (c) => {
+    const auth = getAuth(c);
+    const { id } = c.req.valid("param");
+    const values = c.req.valid("json");
 
-        if (!id) {
-          return c.json({error : " missing id "},400);
+    if (!auth?.userId) {
+      return c.json({ error: "unauthorized" }, 401);
+    }
 
+    try {
+      // First, verify the transaction exists and belongs to the user
+      const existingTransaction = await db
+        .select({ id: transactions.id })
+        .from(transactions)
+        .innerJoin(accounts, eq(transactions.accountId, accounts.id))
+        .where(and(
+          eq(transactions.id, id),
+          eq(accounts.userId, auth.userId)
+        ));
+
+      if (existingTransaction.length === 0) {
+        return c.json({ error: "not found" }, 404);
       }
 
-      if(!auth?.userId) 
-      {
-        return c.json({error : " unauthorized "},401);
-      }
-      const transactionsToUpdate = db.$with("transactions_to_update").as(
-                db.select({ id: transactions.id}).from(transactions)
-                .innerJoin(accounts , eq(transactions.accountId,accounts.id))
-                .where(and(
-                  eq(transactions.id , id),
-                  eq(accounts.userId , auth.userId)
-                ))
-              )
+      // Update the transaction directly
+      const [data] = await db
+        .update(transactions)
+        .set(values)
+        .where(eq(transactions.id, id))
+        .returning();
 
-      const  [data] = await db 
-      .with(transactionsToUpdate)
-      .update(transactions)
-      .set(values)
-      .where(
-        inArray(transactions.id , (sql `(select id from ${transactionsToUpdate})`))
-      )
-      .returning();
-
-      
-
-      if (!data) 
-      {
-        return c.json({error : " not found "},404);
+      if (!data) {
+        return c.json({ error: "update failed" }, 500);
       }
-      return c.json({ data })
-      }
-      
-    
-    )
+
+      return c.json({ data });
+    } catch (error) {
+      console.error("PATCH error:", error);
+      return c.json({ 
+        error: "update failed", 
+        details: error instanceof Error ? error.message : "Unknown error" 
+      }, 500);
+    }
+  }
+)
     .delete(
       "/:id",clerkMiddleware(),zValidator( "param", z.object({
         id : z.string(),

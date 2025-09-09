@@ -23,6 +23,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { NewTransactionForm } from "@/features/transactions/components/transaction-form";
 export const EditTransactionSheet = () => {
 const {isOpen, onClose , id} = useOpenTransaction();
+console.log("EditTransactionSheet - ID:", id);
 const [ConfirmDialog , confirm] = useConfirm(
     "Are you sure you ?", " you are going to delete Transaction  "
 
@@ -31,7 +32,7 @@ const [ConfirmDialog , confirm] = useConfirm(
 
 const transactionQuery = useGetTransaction(id);
 //const mutation = useCreateAccount();
-const editMutation = useEditTransaction(id);
+const editMutation = useEditTransaction(id );
 const deleteMutation = useDeleteTransaction(id!);
 const categoryQuery = useGetCategories();
 const categoryMutation = useCreateCategory();
@@ -69,6 +70,7 @@ const formSchema = insertTransactionSchema.omit({
 type FormValues = z.infer<typeof formSchema>;
 const  onSubmit = (values :  FormValues) =>
         {
+            
                 editMutation.mutate(values,  {
                     onSuccess: () => {
                         onClose();
@@ -87,7 +89,9 @@ const onDelete = async () => {
 
 const defaultValues =  transactionQuery.data ? {
     accountId: transactionQuery.data.accountId,
-    categoryId:transactionQuery.data.categoryId,
+    categoryId: transactionQuery.data.categoryId && categoryOptions.some(c => c.value === transactionQuery.data.categoryId)
+        ? transactionQuery.data.categoryId
+        : "",
     amount:transactionQuery.data.amount?.toString() ?? "",
     date: transactionQuery? new  Date(transactionQuery.data.date) : new Date(),
     payee: transactionQuery.data.payee,
@@ -133,7 +137,7 @@ return (
             categoryOptions={categoryOptions}
             onCreateCategory={onCreateCategory}
             accountOptions={accountOptions}
-            onCreateAccount={onCreateAccount} />
+            onCreateAccount={onCreateAccount}/>
         )}
         
     </SheetContent>
