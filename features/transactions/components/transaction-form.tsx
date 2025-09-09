@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
-import { insertAccountSchema, insertTransactionSchema } from "@/db/schema";
+import {  insertTransactionSchema } from "@/db/schema";
 import  {AmountInput} from "@/components/ui/amount-input"
 import {
   Form,

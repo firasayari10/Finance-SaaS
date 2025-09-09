@@ -11,16 +11,41 @@ import { useGetTransactions } from "@/features/transactions/api/user-get-transac
 import { Skeleton } from "@/components/ui/skeleton";
 import { Loader2 } from "lucide-react";
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
+import { useState } from "react";
+import  {ImportCard } from "@/app/(dashboard)/transactions/ImportCard"
+import { UploadButton } from "@/app/(dashboard)/transactions/UploadButton"
+enum VARIANTS {
+    LIST="LIST",
+    IMPORT="IMPORT",
 
+};
+const INITIAL_IMPORT_RESULTS = {
+    data: [],
+    errors: [],
+    meta: {},
+}
 
 const TransationsPage = () => {
+    const [variant , setVariant] = useState<VARIANTS>(VARIANTS.LIST);
+    const [importResults , setImportResults] = useState(INITIAL_IMPORT_RESULTS);
 
+    const onUpload = (results: typeof INITIAL_IMPORT_RESULTS)=> {
+        console.log({results});
+        setImportResults(results);
+        setVariant(VARIANTS.IMPORT);
+
+    };
+    const onCancelImoport = () => {
+        setImportResults(INITIAL_IMPORT_RESULTS);
+        setVariant(VARIANTS.LIST)
+    }
 
     const newTransaction = useNewTransaction();
     const deleteTransactions = useBulkDeleteTransactions();
     const transactionsquery = useGetTransactions()
     const transactions = transactionsquery.data  ||[];
     const isdisabled = transactionsquery.isLoading || deleteTransactions.isPending ;
+
     if (transactionsquery.isLoading)
     {
         return (
@@ -44,6 +69,17 @@ const TransationsPage = () => {
         
         )
     }
+    if (variant === VARIANTS.IMPORT)
+    {
+        return(
+        <>
+        <div>
+            <ImportCard data={importResults.data} onCancel={onCancelImoport} onSubmit={()=>{}}/>
+        </div>
+            
+            </>)
+    }
+    
     return (
         <div className="max-w-screen-2xl mx-auto w-full pb-10 mb-24 ">
             <Card className=" border-none drop-shadow-sm">
@@ -51,13 +87,18 @@ const TransationsPage = () => {
                 <CardTitle className="text-xl line-clamp-1" >
                     Transactions Hisotry
                 </CardTitle>
-                <Button size="sm" onClick={newTransaction.onOpen}>
+                <div className="flex items-center gap-x-2">
+                    <Button size="sm" onClick={newTransaction.onOpen}>
                     Add new 
                 </Button>
+                
+                        <UploadButton  onUplaod={onUpload}/>
+                
+                </div>
      
             </CardHeader>
             <CardContent>
-                <DataTable filterKey="id" columns={columns} data={transactions} onDelete={(row)=>{
+                <DataTable filterKey="payee" columns={columns} data={transactions} onDelete={(row)=>{
                     const  ids = row.map((r)=> r.original.id);
                     deleteTransactions.mutate({ids});
                 }}  disabled={isdisabled}/>
