@@ -12,7 +12,7 @@ import { useGetCategories } from "@/features/categories/api/user-get-categories"
 import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
 import { useCreateAccount } from "@/features/accounts/api/user-create-account";
 import { NewTransactionForm} from "@/features/transactions/components/transaction-form"
-import { useBulkDeleteTransactions } from "../api/use-bulk-create-transactions ";
+import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
 import { Loader2 } from "lucide-react";
 import { string } from "zod/v3";
 import { id } from "zod/v4/locales";
