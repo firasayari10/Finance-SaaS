@@ -1,12 +1,10 @@
-import { DataGrid } from "@/components/DataGrid"
-export default function DashboardPage() {
+import { DataGrid } from "@/components/DataGrid";
 
-   
-    return (
-      <div className="max-w-screen-2xl mx-auto w-full pb-10 mt-6"
->
-       <DataGrid  />
-      </div>
-    )
-  
+export default function DashboardPage() {
+  return (
+    <div className="max-w-screen-2xl mx-auto w-full pb-10 mt-6">
+      <DataGrid />
+      
+    </div>
+  );
 }

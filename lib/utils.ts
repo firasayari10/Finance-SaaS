@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { eachDayOfInterval, isSameDay } from "date-fns";
+import { eachDayOfInterval, isSameDay, subDays , format } from "date-fns";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 };
@@ -74,5 +74,32 @@ type Period = {
 }
 
 export function formatDateRange(period? : Period) {
+  const defaultTO=new Date();
+  const defaultForm= subDays(defaultTO,30);
 
+  if(!period?.from) {
+    return `${format(defaultForm,"LLL dd")}-${format(defaultTO,"LL dd, y")}`;
+
+  }
+  if(period.to) {
+    return `${format(period.from,"LLL dd")}-${format(period.to,"LL dd, y")}`;
+
+  }
+
+  return format(period.from, "LL dd, y");
+}
+
+export function formatPercentage( value:number,
+  options:{addPrefix ?:boolean} = {
+    addPrefix: false,
+  },
+) {
+  const result=new Intl.NumberFormat("en-US" , {
+    style:"percent",
+  }).format(value/100);
+  if(options.addPrefix && value >0) {
+    return `+${result}`;
+  }
+
+  return result;
 }
