@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { client } from "@/lib/hono";
+import { converAmountFromMiliunits } from "@/lib/utils";
 
 export const useGetTransaction = (id?:string) => {
   enabled : !!id;
@@ -15,7 +16,11 @@ export const useGetTransaction = (id?:string) => {
       }
 
       const { data } = await response.json();
-      return data;
+      return {
+        ...data,
+        amout: converAmountFromMiliunits(data.amount),
+
+      }
     },
   });
 
