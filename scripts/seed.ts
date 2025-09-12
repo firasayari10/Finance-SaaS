@@ -10,7 +10,7 @@ config({ path: ".env.local" });
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql);
 
-const SEED_USER_ID = "use-ur-own-seed-id";
+const SEED_USER_ID = "user_31vovqFhdXmNhcI89nFs3cCUqGE";
 
 const SEED_CATEGORIES = [
   { id: "category_1", name: "FOOD", userId: SEED_USER_ID, plaidId: null },
