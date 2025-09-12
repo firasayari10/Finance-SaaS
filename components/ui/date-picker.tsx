@@ -48,7 +48,7 @@ export const DatePicker = ({
 >
   <div className="min-w-[300px] w-auto">
     <Calendar
-      className="w-[300px]" // enforce calendar width
+      className="w-[300px]"
       mode="single"
       selected={value}
       onSelect={onChange}

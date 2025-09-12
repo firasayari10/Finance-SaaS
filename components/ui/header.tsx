@@ -5,6 +5,7 @@ import { UserButton } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { ClerkLoaded,ClerkLoading } from "@clerk/nextjs";   
 import { WelcomeMsg } from "@/components/ui/welcome-msg";
+import { Filters } from "../filters";
 
 export const Header = ()=>{
     return (
@@ -28,8 +29,9 @@ export const Header = ()=>{
       </div>
     </div>
 
-    {/* Row 2: Welcome Message */}
+    
     <WelcomeMsg />
+    <Filters />
   </div>
 </header>
 
