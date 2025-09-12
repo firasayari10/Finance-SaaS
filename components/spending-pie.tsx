@@ -25,9 +25,6 @@ import {
  SelectItem
 }from"@/components/ui/select"
 
-import { AreaVariant } from "@/components/AreaVariant"
-import { BarVariant } from "@/components/ui/bar-variant";
-import { RadarChart } from "recharts";
 import { RadarVariant } from "./radar-variant";
 import { RadialVariant } from "./radial-variant";
 import { Skeleton } from "./ui/skeleton";
@@ -79,23 +76,24 @@ export const SpendingPie = ({ data = [] }: Props) => {
         </Select>
       </CardHeader>
       <CardContent>
-        {data.length === 0 ? (
-          <div className="flex flex-col gap-y-4 items-center justify-center h-[350px] w-full">
-            <FileSearch className="size-6 text-muted-foreground" />
-            <p className="text-muted-foreground text-sm">
-              no data for this period 
-            </p>
-          </div>
-        ) : (
-          <>
-            {chartType ==="pie" && <PieVariant data={data} />}
-            {chartType ==="radar" && <RadarVariant data={data} />}
-            {chartType ==="radial" && <RadialVariant data={data} />}
-            
-           
-          </>
-        )}
-      </CardContent>
+  {data.length === 0 ? (
+    <div className="flex flex-col gap-y-4 items-center justify-center h-[350px] w-full">
+      <FileSearch className="size-6 text-muted-foreground" />
+      <p className="text-muted-foreground text-sm">
+        no data for this period
+      </p>
+    </div>
+  ) : (
+    <>
+      {chartType === "pie" && (
+        <PieVariant data={data.map(d => ({ ...d, value: String(d.value) }))} />
+      )}
+      {chartType === "radar" && <RadarVariant data={data} />}
+      {chartType === "radial" && <RadialVariant data={data} />}
+    </>
+  )}
+</CardContent>
+
     </Card>
 
   );

@@ -1,5 +1,6 @@
 "use client" ;
 
+import { Suspense } from "react";
 import { Card , CardContent , CardHeader , CardTitle} from "@/components/ui/card"
 import {Button} from "@/components/ui/button"
 import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
@@ -14,7 +15,7 @@ import { Loader2 } from "lucide-react";
 import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete";
 
 
-const AccountPage = () => {
+const AccountPageContent = () => {
 
 
     const newAccount = useNewAccount();
@@ -68,6 +69,27 @@ const AccountPage = () => {
         </div>
     );
 
+};
+
+const AccountPage = () => {
+    return (
+        <Suspense fallback={
+            <div className="max-w-screen-2xl mx-auto w-full pb-10 mb-24 ">
+                <Card className=" border-none drop-shadow-sm"> 
+                    <CardHeader className=" gap-y-2 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="h-8 w-48 bg-gray-200 animate-pulse rounded" />
+                        <CardContent>
+                            <div className="h-[500px] w-full flex items-center justify-center">
+                                <Loader2 className="size-6 text-slate-300 animate-spin"/>
+                            </div>
+                        </CardContent>
+                    </CardHeader>
+                </Card>
+            </div>
+        }>
+            <AccountPageContent />
+        </Suspense>
+    );
 };
 
 export default AccountPage ;

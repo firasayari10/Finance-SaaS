@@ -1,5 +1,5 @@
-
-import { z } from "zod"
+"use client";
+import { z } from "zod";
 
 import { useCreateCategory } from "@/features/categories/api/user-create-category";
 import { useGetCategories } from "@/features/categories/api/user-get-categories";
@@ -32,7 +32,7 @@ const [ConfirmDialog , confirm] = useConfirm(
 
 const transactionQuery = useGetTransaction(id);
 //const mutation = useCreateAccount();
-const editMutation = useEditTransaction(id );
+const editMutation = useEditTransaction(id!);
 const deleteMutation = useDeleteTransaction(id!);
 const categoryQuery = useGetCategories();
 const categoryMutation = useCreateCategory();
@@ -129,15 +129,22 @@ return (
 
         ):(
             <NewTransactionForm
-            id={id}
-            defaultValues={defaultValues}
-            onSubmit={onSubmit}
-            onDelete={onDelete}
-            disabled={isPending}
-            categoryOptions={categoryOptions}
-            onCreateCategory={onCreateCategory}
-            accountOptions={accountOptions}
-            onCreateAccount={onCreateAccount}/>
+                id={id}
+                defaultValues={defaultValues}
+                onSubmit={(values) =>
+                    onSubmit({
+                    ...values,
+                    date: values.date as Date, 
+                    })
+                }
+                onDelete={onDelete}
+                disabled={isPending}
+                categoryOptions={categoryOptions}
+                onCreateCategory={onCreateCategory}
+                accountOptions={accountOptions}
+                onCreateAccount={onCreateAccount}
+                />
+
         )}
         
     </SheetContent>

@@ -1,5 +1,5 @@
-const dateFormat = "yyyy-MM-dd HH:mm:ss"; // Removed leading space
-const outputFormat = "yyyy-MM-dd"; // Fixed typo
+const dateFormat = "yyyy-MM-dd HH:mm:ss"; 
+const outputFormat = "yyyy-MM-dd"; 
 
 import {
     Card,
@@ -10,9 +10,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { ImportTable } from "@/app/(dashboard)/transactions/ImportTable";
 import { useState } from "react";
-import { boolean } from "zod";
+
 import { converAmountToMiliunits } from "@/lib/utils";
-import { format, parse, isValid } from "date-fns" // Added isValid import
+import { format, parse, isValid } from "date-fns" 
 
 const requiredOptions = [
     "amount",
@@ -24,11 +24,14 @@ interface SelectedColumnsState {
     [key: string]: string | null;
 };
 
+type RowObject = { [key: string]: string | number | null }; 
+
 type Props = {
     data: string[][];
     onCancel: () => void;
-    onSubmit: (data: any) => void;
+    onSubmit: (data: RowObject[]) => void;  
 }
+
 
 export const ImportCard = ({
     data, onCancel, onSubmit
@@ -79,16 +82,19 @@ export const ImportCard = ({
                     : transformedRow;
             }).filter((row) => row.length > 0),
         };
+        type RowObject = { [key: string]: string | null };
 
-        const arrayOfData = mappedData.body.map((row) => {
-            return row.reduce((acc: any, cell, index) => {
-                const header = mappedData.headers[index];
-                if (header !== null) {
-                    acc[header] = cell;
-                }
-                return acc;
-            }, {});
-        });
+
+                const arrayOfData = mappedData.body.map((row) => {
+    return row.reduce((acc: RowObject, cell, index) => {
+        const header = mappedData.headers[index];
+        if (header !== null) {
+            acc[header] = cell;
+        }
+        return acc;
+    }, {} as RowObject);
+});
+
 
         const formattedData = arrayOfData.map((item) => {
             try {

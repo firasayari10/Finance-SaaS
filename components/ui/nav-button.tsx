@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import  Link  from "next/link";
 import {cn} from "@/lib/utils";
-import { useMedia} from "react-use";
+
 
 type Props = {
     href:string ;

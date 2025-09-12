@@ -16,7 +16,7 @@ import {
     TooltipProvider,
     TooltipTrigger
 } from "@/components/ui/tooltip"
-import { placeholder } from "drizzle-orm"
+
 
 
 type Props = {

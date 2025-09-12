@@ -1,76 +1,73 @@
 import {
+  RadialBar,
+  Legend,
+  RadialBarChart,
+  ResponsiveContainer,
+  LegendPayload,
+} from "recharts";
+import { formatCurrency } from "@/lib/utils";
 
-    RadialBar,
-    Legend,
-    RadialBarChart
-    ,
-    ResponsiveContainer,
-   
-    
-}
-from "recharts" ;
-import { formatCurrency, formatPercentage } from "@/lib/utils";
-import { CategoryToolTip } from "./category-tool-tip";
-
-const COLORS = ["#0062ff","#12C6FF","#ff647f","#FF9354"]
+const COLORS = ["#0062ff", "#12C6FF", "#ff647f", "#FF9354"];
 
 type Props = {
   data?: {
-    name:string,
-    value:number,
+    name: string;
+    value: number;
   }[];
 };
 
-export const RadialVariant =({data}: Props) => {
-    return (
-        <ResponsiveContainer width="100%" height={350} >
-            <RadialBarChart cx="50%"  cy="30%"  
-            barSize={10}
-            innerRadius="90%"
-            outerRadius="40%"
-            data={data?.map((item, index) => ( {
-                ...item,
-                fill: COLORS[index % COLORS .length]
-            }))}>
-                <RadialBar label={{
-                    position:"insideStart",
-                    fill:"#fff",
-                    fontSize:"12px"
-                }}
-                background
-                dataKey="value"/>
-                <Legend 
-                layout="horizontal"
-                verticalAlign="bottom"
-                align="right"
-                iconType="circle"
-                content={({payload}:any) => {
-                    return(
-                        <ul className="flex flexècol space-y-2" >
-                            {payload.map((entry: any, index:number )=> (
-                                <li  key={`ìtem-${index}`} className="flex items-center space-x-2"> 
-                                <span className="size-2 rounded-full" style={{backgroundColor:entry.color}}/>
-                                <div className="space-x-1"> 
-                                    <span className="text-sm text-muted-foreground" >
-                                        {entry.value}
-                                    </span>
-                                    <span className="text-sm">
-                                        {formatCurrency(entry.payload.value )}
-                                    </span>
+export const RadialVariant = ({ data }: Props) => {
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <RadialBarChart
+        cx="50%"
+        cy="30%"
+        barSize={10}
+        innerRadius="90%"
+        outerRadius="40%"
+        data={data?.map((item, index) => ({
+          ...item,
+          fill: COLORS[index % COLORS.length],
+        }))}
+      >
+        <RadialBar
+          label={{
+            position: "insideStart",
+            fill: "#fff",
+            fontSize: "12px",
+          }}
+          background
+          dataKey="value"
+        />
+        <Legend
+          layout="horizontal"
+          verticalAlign="bottom"
+          align="right"
+          iconType="circle"
+          content={({ payload }: { payload?: readonly LegendPayload[] }) => {
+            if (!payload) return null;
+            return (
+             <ul className="flex flex-col space-y-2">
+  {payload.map((entry, index) => (
+    <li key={`item-${index}`} className="flex items-center space-x-2">
+      <span
+        className="size-2 rounded-full"
+        style={{ backgroundColor: entry.color }}
+      />
+      <div className="space-x-1">
+        <span className="text-sm text-muted-foreground">{entry.value}</span>
+        <span className="text-sm">
+          {entry.payload ? formatCurrency(entry.payload.value) : 0}
+        </span>
+      </div>
+    </li>
+  ))}
+</ul>
 
-                                </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )
-                }}/>
-                
-               
-            </RadialBarChart>
-
-
-        </ResponsiveContainer>
-    )
-
-
+            );
+          }}
+        />
+      </RadialBarChart>
+    </ResponsiveContainer>
+  );
 };

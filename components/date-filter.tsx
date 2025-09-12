@@ -1,6 +1,6 @@
 "use client"
 
-import { AcccountFilter } from "./account-filter"
+import { Suspense } from "react";
 import qs from "query-string";
 import {
   useRouter,
@@ -8,26 +8,19 @@ import {
   useSearchParams,
 } from "next/navigation";
 
-import {
-  Select,
-  SelectContent,
-  SelectTrigger,
-  SelectItem,
-  SelectValue
-} from "@/components/ui/select";
-import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
-import { useGetSummary } from "@/features/summary/api/use-get-summary";
+
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
 import { ChevronDown } from "lucide-react";
-import { cn , formatDateRange}  from "@/lib/utils"
+import {  formatDateRange}  from "@/lib/utils"
 import {Button} from "@/components/ui/button"
 import {Calendar} from "@/components/ui/calendar"
 import {
     Popover,PopoverContent,PopoverTrigger,PopoverClose
 }from "@/components/ui/popover"
 import { subDays ,format} from "date-fns";
-export const DateFilter=() => {
+
+const DateFilterContent=() => {
       const params = useSearchParams();
         const accountId = params.get("accountId") ;
         const from = params.get('from') ||"";
@@ -113,4 +106,17 @@ return (
                 </div>
 
 )
+}
+
+export const DateFilter = () => {
+  return (
+    <Suspense fallback={
+      <Button disabled size="sm" variant="outline" className="lg:w-auto w-full h-9 rounded-md px-3 font-normal bg-white/30 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent outline-none text-white focus:bg-white/30 transition">
+        <span>Loading...</span>
+        <ChevronDown className="ml-2 size-4 opacity-50" />
+      </Button>
+    }>
+      <DateFilterContent />
+    </Suspense>
+  );
 }

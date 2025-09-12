@@ -31,7 +31,8 @@ export const LineVariant = ({ data }: Props) => {
           style={{ fontSize: "12px" }}
           tickMargin={16}
         />
-        <Tooltip content={<CustomToolTip />} />
+        <Tooltip content={(props) => <CustomToolTip {...props} />} />
+
         <Line 
           dot={false}
           dataKey="income"

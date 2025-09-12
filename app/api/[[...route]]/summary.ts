@@ -4,7 +4,7 @@ import { Hono } from "hono";
 import {z} from "zod"
 import { db} from "@/db/drizzle";
 import {sql ,sum ,eq, and , gte, lte , lt, desc} from "drizzle-orm"
-import { transactions, transactionsRelations , accounts, categories} from "@/db/schema";
+import { transactions,  accounts, categories} from "@/db/schema";
 import { subDays,parse , differenceInDays} from "date-fns";
 import { caluclatePercentageChange, fillMissingDays } from "@/lib/utils";
 

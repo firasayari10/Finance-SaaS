@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { formatDateRange } from '@/lib/utils';
 import  {Skeleton } from "./ui/skeleton"
@@ -9,7 +10,7 @@ import { FaArrowTrendUp ,   FaArrowTrendDown  } from "react-icons/fa6";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import { DataCard } from "@/components/data-card";
 
-export const DataGrid =() => {
+const DataGridContent =() => {
     const {data , isLoading} =useGetSummary();
     const params = useSearchParams();
     const to =params.get("to") || undefined;
@@ -66,6 +67,20 @@ export const DataGrid =() => {
         />
         </div>
     )
+}
+
+export const DataGrid = () => {
+    return (
+        <Suspense fallback={
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-2 mb-8">
+                <DataCardLoading />
+                <DataCardLoading />
+                <DataCardLoading />
+            </div>
+        }>
+            <DataGridContent />
+        </Suspense>
+    );
 }
 
 export const DataCardLoading = () => {

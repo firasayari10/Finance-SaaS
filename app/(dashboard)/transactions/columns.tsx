@@ -2,7 +2,7 @@
 
 import { InferResponseType } from "hono";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronsUpDown } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { AccountColumn } from "./account-column";
 import { CategoryColumn } from "./category-column";
-//import { Badge } from "lucide-react";
+
 
 export type ResponsType = InferResponseType<typeof client.api.transactions.$get, 200>["data"][0];
 

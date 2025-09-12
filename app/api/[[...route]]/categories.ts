@@ -1,5 +1,5 @@
 import {Hono} from "hono";
-import { handle } from "hono/vercel";
+
 import {db} from "@/db/drizzle"
 import {HTTPException } from "hono/http-exception"
 import {categories,insertCategorySchema  } from "@/db/schema" ;

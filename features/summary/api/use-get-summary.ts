@@ -1,4 +1,5 @@
-"use client";
+'use client';
+
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
@@ -6,10 +7,11 @@ import { client } from "@/lib/hono";
 import { converAmountFromMiliunits } from "@/lib/utils";
 
 export const useGetSummary = () => {
+  // ✅ This is now only used on the client
   const params = useSearchParams();
-  const from = params.get("from") || "";
-  const to = params.get("to") || "";
-  const accountId = params.get("accountId") || "";
+  const from = params?.get("from") || "";
+  const to = params?.get("to") || "";
+  const accountId = params?.get("accountId") || "";
 
   const query = useQuery({
     queryKey: ["summary", { from, to, accountId }],
@@ -18,11 +20,10 @@ export const useGetSummary = () => {
         query: { from, to, accountId },
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch summary");
-      }
+      if (!response.ok) throw new Error("Failed to fetch summary");
 
       const { data } = await response.json();
+
       return {
         ...data,
         incomeAmount: converAmountFromMiliunits(data.incomeAmount),

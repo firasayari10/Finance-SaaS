@@ -1,5 +1,5 @@
 import {Hono} from "hono";
-import { handle } from "hono/vercel";
+
 import {db} from "@/db/drizzle"
 import {HTTPException } from "hono/http-exception"
 import {transactions,insertTransactionSchema, categories , accounts } from "@/db/schema" ;
@@ -9,7 +9,7 @@ import {createId} from "@paralleldrive/cuid2"
 import {z} from "zod";
 import { zValidator } from "@hono/zod-validator";
 import {subDays , parse} from "date-fns"
-import { accessSync } from "fs";
+
 const app = new Hono() 
     .get("/" ,
       zValidator("query", z.object({

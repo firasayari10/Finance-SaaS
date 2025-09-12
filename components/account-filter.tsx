@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { useGetAccounts } from "@/features/accounts/api/user-get-accounts";
 import qs from "query-string";
 import {
@@ -14,10 +15,10 @@ import {
   SelectItem,
   SelectValue
 } from "@/components/ui/select";
-import { Router } from "lucide-react";
+
 import { useGetSummary } from "@/features/summary/api/use-get-summary";
 
-export const AcccountFilter = () => {
+const AcccountFilterContent = () => {
     const params = useSearchParams();
     const accountId = params.get("accountId") ||"all";
     const from = params.get('from') ||"";
@@ -54,5 +55,19 @@ export const AcccountFilter = () => {
         ))}
       </SelectContent>
     </Select>
+  );
+};
+
+export const AcccountFilter = () => {
+  return (
+    <Suspense fallback={
+      <Select disabled>
+        <SelectTrigger className="lg:w-auto w-full h-9 rounded-md px-3 font-normal bg-white/30 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent outline-none text-white focus:bg-white/30 transition">
+          <SelectValue placeholder="Loading..." />
+        </SelectTrigger>
+      </Select>
+    }>
+      <AcccountFilterContent />
+    </Suspense>
   );
 };

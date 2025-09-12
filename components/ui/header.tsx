@@ -1,6 +1,6 @@
 import { HeaderLogo } from "@/components/ui/header-logo";
 import { Navigation } from "@/components/ui/navigation";
-import { ClerkRequest } from "@clerk/backend/internal";
+
 import { UserButton } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
 import { ClerkLoaded,ClerkLoading } from "@clerk/nextjs";   
