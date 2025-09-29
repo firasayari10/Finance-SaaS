@@ -2,7 +2,7 @@
 
 A modern, full-stack finance management SaaS application built with cutting-edge technologies. Track your income, expenses, and financial health with powerful analytics and data visualization.
 
-🚀 **Live Demo**: [finance-saas.vercel.app](https://finance-saas.vercel.app)
+🚀 **Live Demo**: [finance-saa-s.vercel.app](https://finance-saa-s.vercel.app/sign-in?redirect_url=https%3A%2F%2Ffinance-saa-s.vercel.app%2F)
 
 ## 🛠️ Technology Stack
 
